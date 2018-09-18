@@ -11,26 +11,26 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class Client {
 
-	public static void main(String[] args) throws Exception {
-		
-		EventLoopGroup workgroup = new NioEventLoopGroup();
-		Bootstrap b = new Bootstrap();
-		b.group(workgroup)
-		.channel(NioSocketChannel.class)
-		.handler(new ChannelInitializer<SocketChannel>() {
-			@Override
-			protected void initChannel(SocketChannel sc) throws Exception {
-				sc.pipeline().addLast(new ClientHandler());
-			}
-		});
-		
-		ChannelFuture cf1 = b.connect("127.0.0.1", 8765).sync();
-		
-		//buf
-		cf1.channel().writeAndFlush(Unpooled.copiedBuffer("hello".getBytes()));
-		
-		cf1.channel().closeFuture().sync();
-		workgroup.shutdownGracefully();
-		
-	}
+    public static void main(String[] args) throws Exception {
+
+        EventLoopGroup workgroup = new NioEventLoopGroup();
+        Bootstrap b = new Bootstrap();
+        b.group(workgroup)
+                .channel(NioSocketChannel.class)
+                .handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel sc) throws Exception {
+                        sc.pipeline().addLast(new ClientHandler());
+                    }
+                });
+
+        ChannelFuture cf1 = b.connect("127.0.0.1", 8765).sync();
+
+
+        cf1.channel().writeAndFlush(Unpooled.copiedBuffer("hello".getBytes()));
+        cf1.channel().closeFuture().sync();
+        workgroup.shutdownGracefully();
+
+
+    }
 }
