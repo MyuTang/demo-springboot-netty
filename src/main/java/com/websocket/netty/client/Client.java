@@ -9,6 +9,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+
+
 public class Client {
 
     public static void main(String[] args) throws Exception {
@@ -26,8 +28,14 @@ public class Client {
 
         ChannelFuture cf1 = b.connect("127.0.0.1", 8765).sync();
 
+        while(true){
+            byte[] bytes = new byte[1024];
+            System.in.read(bytes);
+            cf1.channel().writeAndFlush(Unpooled.copiedBuffer(bytes));
+            if (new String(bytes).equals("exit"))
+                break;
+        }
 
-        cf1.channel().writeAndFlush(Unpooled.copiedBuffer("hello".getBytes()));
         cf1.channel().closeFuture().sync();
         workgroup.shutdownGracefully();
 
