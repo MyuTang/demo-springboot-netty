@@ -1,10 +1,8 @@
-package com.websocket.netty.client;
+package com.snailmann.netty.client.handle;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.ReferenceCountUtil;
 
 public class ClientHandler extends ChannelHandlerAdapter {
@@ -18,8 +16,6 @@ public class ClientHandler extends ChannelHandlerAdapter {
             buf.readBytes(data);
             String request = new String(data, "utf-8");
             System.out.println("Client Receive: " + request);
-
-
         } finally {
             ReferenceCountUtil.release(msg);
         }
